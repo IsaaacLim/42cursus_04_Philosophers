@@ -17,8 +17,7 @@ void	philo_eat(int philo_x)
 	pthread_mutex_lock(&mutex);
 	timestamp = ft_time();
 	printf("%d %i %s\n", timestamp, philo_x, "is eating");
-	// usleep(1);
-	printf("Time to eat: %d\n", g_argv.time_to_eat);
+	usleep(g_argv.eating);
 	pthread_mutex_unlock(&mutex);
 	printf("%d %i %s\n", timestamp, philo_x, "done eating");
 }
@@ -53,8 +52,9 @@ int	main(int argc, char *argv[])
 	int n;
 	int n_of_philos;
 
-	g_argv.time_to_eat = 10;
-	printf("Time to eat: %d\n", g_argv.time_to_eat);
+	if (ft_init_arg(argc, argv) == false)
+		return (-1);
+	printf("Time to eat: %d\n", g_argv.eating);
 
 	n_of_philos = ft_atoi(argv[1]);
 	th = malloc(sizeof(pthread_t) * n_of_philos);

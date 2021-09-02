@@ -4,18 +4,20 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
 
 struct s_argv
 {
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
+	int dying;
+	int eating;
+	int sleeping;
 };
 
 struct s_argv g_argv;
 
+bool	ft_init_arg(int argc, char *argv[]);
 int ft_atoi(const char *str);
 int	ft_time(void);
 

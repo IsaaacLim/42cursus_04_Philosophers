@@ -1,15 +1,5 @@
 #include "philo.h"
 
-
-int	ft_time(void)
-{
-	struct timeval time;
-
-	gettimeofday(&time, NULL);
-	long millisecond = time.tv_sec % 1000 * 1000 + time.tv_usec / 1000;
-	return ((int)millisecond);
-}
-
 pthread_mutex_t mutex;
 
 void	*threadFuncRet()
@@ -21,47 +11,75 @@ void	*threadFuncRet()
 	return ((void *)result);
 }
 
-int primes[10] = {2,3,5,7,11,13,17,19,23,29};
-
-void	*myThreadFunc(void *arg)
+void	philo_eat(int philo_x)
 {
 	int timestamp;
-	int *i = (int *)arg;
 	pthread_mutex_lock(&mutex);
 	timestamp = ft_time();
-	printf("First line: %d Timestamp: %i\n", primes[*i], timestamp);
-	free(arg);
+	printf("%d %i %s\n", timestamp, philo_x, "is eating");
+	// usleep(1);
+	printf("Time to eat: %d\n", g_argv.time_to_eat);
 	pthread_mutex_unlock(&mutex);
-	sleep(1);
-	printf("Second line\n");
+	printf("%d %i %s\n", timestamp, philo_x, "done eating");
 }
 
+void philo_sleep(int philo_x)
+{
+	int timestamp;
+	timestamp = ft_time();
+	printf("%d %i %s\n", timestamp, philo_x, "is sleeping");
+}
+
+void philo_think(int philo_x)
+{
+	int timestamp;
+	timestamp = ft_time();
+	printf("%d %i %s\n", timestamp, philo_x, "is thinking");
+}
+
+void *philo_routine(void *arg)
+{
+	int philo_x;
+
+	philo_x = *(int *)arg;
+	philo_eat(philo_x);
+	philo_sleep(philo_x);
+	philo_think(philo_x);
+	free(arg);
+}
 int	main(int argc, char *argv[])
 {
-	pthread_t th[10];
-	int i;
+	pthread_t *th;
+	int n;
 	int n_of_philos;
 
+	g_argv.time_to_eat = 10;
+	printf("Time to eat: %d\n", g_argv.time_to_eat);
+
 	n_of_philos = ft_atoi(argv[1]);
+	th = malloc(sizeof(pthread_t) * n_of_philos);
 	printf("Before thread\n");
 	pthread_mutex_init(&mutex, NULL);
-	i = 0;
-	while (i < n_of_philos)
+	n = 0;
+	while (n < n_of_philos)
 	{
 		int *a = malloc(sizeof(int));
-		*a = i;
-		if (pthread_create(&th[i], NULL, myThreadFunc, a) != 0)
+		*a = n + 1;
+		if (pthread_create(&th[n], NULL, philo_routine, a) != 0)
 			return (1);
-		i++;
+		n++;
 	}
-	i = 0;
-	while (i < n_of_philos)
+	n = 0;
+	while (n < n_of_philos)
 	{
-		if (pthread_join(th[i], NULL) != 0)
+		if (pthread_join(th[n], NULL) != 0)
 			return (1);
-		i++;
+		n++;
 	}
 	printf("After thread\n");
+	pthread_mutex_destroy(&mutex);
+	free(th);
+	
 	pthread_t ret;
 	int *ret_val;
 	if (pthread_create(&ret, NULL, threadFuncRet, NULL) != 0)
@@ -70,5 +88,4 @@ int	main(int argc, char *argv[])
 		return (1);
 	printf("Return add (main): %p\n", ret_val);
 	free(ret_val);
-	pthread_mutex_destroy(&mutex);
 }

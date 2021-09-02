@@ -38,12 +38,16 @@ void philo_think(int philo_x)
 
 void *philo_routine(void *arg)
 {
-	int philo_x;
+	t_thread philo;
 
-	philo_x = *(int *)arg;
-	philo_eat(philo_x);
-	philo_sleep(philo_x);
-	philo_think(philo_x);
+	philo.philo_x = *(int *)arg;
+	while (1) //no free if sig interupt
+	{
+		philo_eat(philo.philo_x);
+		philo_sleep(philo.philo_x);
+		philo_think(philo.philo_x);
+		usleep (1000000);
+	}
 	free(arg);
 }
 int	main(int argc, char *argv[])
@@ -52,7 +56,7 @@ int	main(int argc, char *argv[])
 	int n;
 	int n_of_philos;
 
-	if (ft_init_arg(argc, argv) == false)
+	if (!(ft_init_arg(argc, argv)))
 		return (-1);
 	printf("Time to eat: %d\n", g_argv.eating);
 

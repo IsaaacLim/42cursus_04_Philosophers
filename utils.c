@@ -21,3 +21,12 @@ int ft_atoi(const char *str)
 		tot = tot * 10 + (str[i++] - '0');
 	return (tot * (long)flag);
 }
+
+int	ft_time(void)
+{
+	struct timeval time;
+
+	gettimeofday(&time, NULL);
+	long millisecond = time.tv_sec % 1000 * 1000 + time.tv_usec / 1000;
+	return ((int)millisecond);
+}

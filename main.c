@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <sys/time.h>
+#include "philo.h"
+
 
 int	ft_time(void)
 {
@@ -39,15 +36,17 @@ void	*myThreadFunc(void *arg)
 	printf("Second line\n");
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
 	pthread_t th[10];
 	int i;
+	int n_of_philos;
 
+	n_of_philos = ft_atoi(argv[1]);
 	printf("Before thread\n");
 	pthread_mutex_init(&mutex, NULL);
 	i = 0;
-	while (i < 2)
+	while (i < n_of_philos)
 	{
 		int *a = malloc(sizeof(int));
 		*a = i;
@@ -56,7 +55,7 @@ int	main(void)
 		i++;
 	}
 	i = 0;
-	while (i < 2)
+	while (i < n_of_philos)
 	{
 		if (pthread_join(th[i], NULL) != 0)
 			return (1);

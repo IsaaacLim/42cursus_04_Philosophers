@@ -16,9 +16,12 @@ struct s_argv {
 
 struct s_argv	g_argv;
 
-typedef struct s_thread {
-	int	philo_x;
-}	t_thread;
+typedef struct s_philo {
+	int	x;
+	int fork_left;
+	int fork_right;
+	int	last_meal;
+}	t_philo;
 
 bool	ft_init_arg(int argc, char *argv[]);
 int		ft_atoi(const char *str);

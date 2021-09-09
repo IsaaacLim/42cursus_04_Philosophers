@@ -32,6 +32,7 @@ bool	ft_init_arg(int argc, char *argv[])
 			"[number_of_times_each_philosopher_must_eat]\n");
 		return (false);
 	}
+	g_argv.n_philos = ft_atoi(argv[1]);
 	g_argv.dying = ft_atoi(argv[2]) * 1000;
 	g_argv.eating = ft_atoi(argv[3]) * 1000;
 	g_argv.sleeping = ft_atoi(argv[4]) * 1000;

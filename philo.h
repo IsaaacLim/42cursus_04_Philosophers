@@ -8,7 +8,14 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define YELLOW "\033[0;33m"
+# define BLUE "\033[0;34m"
+# define PURPLE "\033[0;35m"
+# define CYAN "\033[0;36m"
 # define RESET "\033[0;0m"
+
 
 struct s_argv {
 	int	dying;
@@ -37,5 +44,6 @@ typedef struct s_philos {
 bool	ft_init_arg(int argc, char *argv[]);
 int		ft_atoi(const char *str);
 int		ft_time(void);
+void	ft_print(int philo, char *str, char *color);
 
 #endif

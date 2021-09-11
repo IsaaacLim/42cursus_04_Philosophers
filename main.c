@@ -1,34 +1,29 @@
 #include "philo.h"
 
 pthread_mutex_t *fork_x;
+pthread_mutex_t print;
 
-void	philo_eat(t_philos *philo, char *color)
+void	ft_print(int philo, char *str, char *color)
 {
-	int left;
-	int right;
+	pthread_mutex_lock(&print);
+	printf("%d %s%i %s%s\n", ft_time(), color, philo, str, RESET);
+	pthread_mutex_unlock(&print);
+}
 
+void	philo_lo(t_philos *philo, char *color)
+{
 	pthread_mutex_lock(&fork_x[philo->x - 1]);
-	left = philo->x - 1;
-	printf("%d %s%i %s%s %i\n", ft_time(), color, philo->x, "has taken a fork", RESET , left);
+	ft_print(philo->x, "has taken a fork", color);
 	pthread_mutex_lock(&fork_x[philo->x % g_argv.n_philos]);
-	right = philo->x % g_argv.n_philos;
-	printf("%d %s%i %s%s %i\n", ft_time(), color, philo->x, "has taken a fork", RESET, right);
-	printf("%d %s%i %s%s\n", ft_time(), color, philo->x, "is eating", RESET);
+	ft_print(philo->x, "has taken a fork", color);
+	ft_print(philo->x, "is eating", color);
 	usleep(g_argv.eating);
 	philo->t_last_meal = ft_time();
 	pthread_mutex_unlock(&fork_x[philo->x - 1]);
 	pthread_mutex_unlock(&fork_x[philo->x % g_argv.n_philos]);
-}
-
-void philo_sleep(int x)
-{
-	printf("%d %i %s\n", ft_time(), x, "is sleeping");
+	ft_print(philo->x, "is sleeping", color);
 	usleep(g_argv.sleeping);
-}
-
-void philo_think(int x)
-{
- 	printf("%d %i %s\n", ft_time(), x, "is thinking");
+	ft_print(philo->x, "is thinking", color);
 }
 
 void *philo_routine(void *arg) //remove arg input
@@ -36,14 +31,12 @@ void *philo_routine(void *arg) //remove arg input
 	t_philos *philo;
 	philo = (t_philos *)arg;
 
-	char colors[6][10] = {"\033[0;31m","\033[0;32m","\033[0;33m","\033[0;34m","\033[0;35m","\033[0;36m"};
+	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
 	if (philo->x % 2 == 0)
 		usleep (150000);
 	// while (1) //no free if sig interupt
 	// {
-		philo_eat(philo, colors[(philo->x - 1) % 6]);
-		philo_sleep(philo->x);
-		philo_think(philo->x);
+		philo_lo(philo, colors[(philo->x - 1) % 6]);
 	// }
 }
 int	main(int argc, char *argv[])
@@ -66,6 +59,7 @@ int	main(int argc, char *argv[])
 		philo[n]->x = n + 1;
 		n++;
 	}
+	pthread_mutex_init(&print, NULL);
 	n = 0;
 	while (n < g_argv.n_philos)
 	{
@@ -87,6 +81,7 @@ int	main(int argc, char *argv[])
 		printf("%d %d t_last_meal\n", philo[n]->t_last_meal, n + 1);
 		free(philo[n]);
 	}
+	pthread_mutex_destroy(&print);
 	free(fork_x);
 	free(th);
 	free(philo);

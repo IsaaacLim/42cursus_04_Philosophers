@@ -14,7 +14,7 @@ void	ft_print(int philo, char *str, char *color)
 	}
 }
 
-void	philo_lo(t_philos *philo, char *color)
+void	philo_routine(t_philos *philo, char *color)
 {
 	pthread_mutex_lock(&fork_x[philo->x - 1]);
 	ft_print(philo->x, "has taken a fork", color);
@@ -24,6 +24,8 @@ void	philo_lo(t_philos *philo, char *color)
 	usleep(g_argv.eating);
 	philo->t_last_meal = ft_time();
 	philo->n_eaten += 1;
+	if (philo->n_eaten == g_argv.n_to_eat)
+		g_argv.philo_finished += 1;
 	pthread_mutex_unlock(&fork_x[philo->x - 1]);
 	pthread_mutex_unlock(&fork_x[philo->x % g_argv.n_philos]);
 	ft_print(philo->x, "is sleeping", color);
@@ -31,7 +33,7 @@ void	philo_lo(t_philos *philo, char *color)
 	ft_print(philo->x, "is thinking", color);
 }
 
-void *philo_routine(void *arg)
+void *philo_thread(void *arg)
 {
 	t_philos *philo;
 	philo = (t_philos *)arg;
@@ -41,7 +43,7 @@ void *philo_routine(void *arg)
 		usleep (150000);
 	while (!g_argv.all_finished && !g_argv.dead)
 	{
-		philo_lo(philo, colors[(philo->x - 1) % 6]);
+		philo_routine(philo, colors[(philo->x - 1) % 6]);
 	}
 	return (NULL);
 }
@@ -53,20 +55,14 @@ void	*ft_philo_checker(void *arg)
 	philo = (t_philos *)arg;
 	while (!philo->t_last_meal)
 		;
-	// usleep(300000);
-	// pthread_mutex_lock(&death_lock);
-	// printf("TIME: %d %d %d\n", ft_time(), philo->x, ft_time() - philo->t_last_meal);
-	// pthread_mutex_unlock(&death_lock);
-	// if (!g_argv.dead)
-		// printf("DEAD %d\n", g_argv.dying);
-	// ft_print(philo->x, "has died", RESET);
-	// g_argv.dead = true;
-	while (!g_argv.dead)
+	while (!g_argv.all_finished && !g_argv.dead)
 	{
+		if (g_argv.philo_finished == g_argv.n_philos)
+			g_argv.all_finished = true;
 		pthread_mutex_lock(&death_lock);
 		if (ft_time() - philo->t_last_meal > g_argv.dying / 1000)
 		{
-			ft_print(philo->x, "has died", RESET);
+			ft_print(philo->x, "died", RESET);
 			g_argv.dead = true;
 		}
 		pthread_mutex_unlock(&death_lock);
@@ -102,7 +98,7 @@ int	main(int argc, char *argv[])
 	n = 0;
 	while (n < g_argv.n_philos)
 	{
-		if (pthread_create(&th[n], NULL, philo_routine, &(philo[n]->x)) != 0)
+		if (pthread_create(&th[n], NULL, philo_thread, &(philo[n]->x)) != 0)
 			return (1);
 		n++;
 	}
@@ -115,7 +111,7 @@ int	main(int argc, char *argv[])
 			return (1);
 		n++;
 	}
-	ft_philo_check(philo, death_lock);
+	// ft_philo_check(philo, death_lock);
 	i = 0;
 	while (i < g_argv.n_philos)
 	{

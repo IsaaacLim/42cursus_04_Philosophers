@@ -51,6 +51,7 @@ bool	ft_init_arg(int argc, char *argv[])
 	}
 	else
 		g_argv.n_to_eat = -1;
+	g_argv.philo_finished = 0;
 	return (true);
 }
 

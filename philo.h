@@ -23,6 +23,7 @@ struct s_argv {
 	int	eating;
 	int	sleeping;
 	int	n_to_eat;
+	int	philo_finished;
 	bool	all_finished;
 	bool	dead;
 };

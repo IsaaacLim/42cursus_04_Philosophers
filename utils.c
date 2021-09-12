@@ -7,7 +7,7 @@ int	ft_atoi(const char *str)
 	long	tot;
 
 	i = 0;
-	while (str[i] >= 9 && str[i] <= 13 || str[i] == ' ')
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;
 	flag = 1;
 	if (str[i] == '-' || str[i] == '+')

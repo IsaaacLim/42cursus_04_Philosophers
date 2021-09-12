@@ -43,6 +43,7 @@ void *philo_routine(void *arg)
 	{
 		philo_lo(philo, colors[(philo->x - 1) % 6]);
 	}
+	return (NULL);
 }
 
 void	*ft_philo_checker(void *arg)
@@ -70,6 +71,7 @@ void	*ft_philo_checker(void *arg)
 		}
 		pthread_mutex_unlock(&death_lock);
 	}
+	return (NULL);
 }
 
 int	main(int argc, char *argv[])

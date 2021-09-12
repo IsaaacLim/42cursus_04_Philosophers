@@ -112,7 +112,6 @@ int	main(int argc, char *argv[])
 			return (1);
 		n++;
 	}
-	// ft_philo_check(philo, death_lock);
 	i = 0;
 	while (i < g_argv.n_philos)
 	{

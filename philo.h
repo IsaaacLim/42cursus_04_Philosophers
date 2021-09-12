@@ -49,7 +49,6 @@ bool	ft_init_arg(int argc, char *argv[]);
 int		ft_atoi(const char *str);
 int		ft_time(void);
 void	ft_print(int philo, char *str, char *color);
-void	ft_philo_check(t_philos **philo, pthread_mutex_t death_lock);
 
 
 #endif

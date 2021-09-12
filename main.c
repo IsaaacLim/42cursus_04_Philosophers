@@ -2,7 +2,6 @@
 
 pthread_mutex_t *fork_x;
 pthread_mutex_t print_lock;
-pthread_mutex_t death_lock;
 
 void	ft_print(int philo, char *str, char *color)
 {
@@ -60,13 +59,11 @@ void	*ft_philo_checker(void *arg)
 	{
 		if (g_argv.philo_finished == g_argv.n_philos)
 			g_argv.all_finished = true;
-		pthread_mutex_lock(&death_lock);
 		if (ft_time() - philo->t_last_meal > g_argv.dying / 1000)
 		{
 			ft_print(philo->x, "died", RESET);
 			g_argv.dead = true;
 		}
-		pthread_mutex_unlock(&death_lock);
 	}
 	return (NULL);
 }
@@ -95,7 +92,6 @@ int	main(int argc, char *argv[])
 		n++;
 	}
 	pthread_mutex_init(&print_lock, NULL);
-	pthread_mutex_init(&death_lock, NULL);
 	n = 0;
 	while (n < g_argv.n_philos)
 	{
@@ -129,7 +125,6 @@ int	main(int argc, char *argv[])
 		free(philo[n]);
 	}
 	pthread_mutex_destroy(&print_lock);
-	pthread_mutex_destroy(&death_lock);
 	free(fork_x);
 	free(th);
 	free(checker);

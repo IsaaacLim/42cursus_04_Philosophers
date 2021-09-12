@@ -28,6 +28,7 @@ int	ft_exit(t_philos **philo, pthread_t *th, pthread_t *checker)
 	free(th);
 	free(checker);
 	free(philo);
+	return (0);
 }
 
 void	ft_print(int philo, char *str, char *color)
@@ -47,28 +48,29 @@ void	philo_routine(t_philos *philo, char *color)
 	{
 		pthread_mutex_lock(&fork_x[philo->x - 1]);
 		ft_print(philo->x, "has taken a fork", color);
-		philo->t_last_meal = ft_time();
-		if (g_argv.n_philos == 1)
-		{
-			printf("ONLY ONE\n");
-			break;
-		}
-		printf("ONLY TWO\n");
+//		philo->t_last_meal = ft_time();
+//		if (g_argv.n_philos == 1)
+//		{
+//			printf("ONLY ONE\n");
+//			break;
+//		}
+//		printf("ONLY TWO\n");
 		pthread_mutex_lock(&fork_x[philo->x % g_argv.n_philos]);
 		ft_print(philo->x, "has taken a fork", color);
+		philo->t_last_meal = ft_time();
 		ft_print(philo->x, "is eating", color);
 		philo->n_eaten += 1;
 		if (philo->n_eaten == g_argv.n_to_eat)
 			g_argv.philo_finished += 1;
 		usleep(g_argv.eating);
-		philo->t_last_meal = ft_time();
+//		philo->t_last_meal = ft_time();
 		pthread_mutex_unlock(&fork_x[philo->x - 1]);
 		pthread_mutex_unlock(&fork_x[philo->x % g_argv.n_philos]);
 		ft_print(philo->x, "is sleeping", color);
 		usleep(g_argv.sleeping);
 		ft_print(philo->x, "is thinking", color);
 	}
-	printf("HERE\n");
+//	printf("HERE\n");
 }
 
 void *philo_thread(void *arg)
@@ -77,13 +79,14 @@ void *philo_thread(void *arg)
 	philo = (t_philos *)arg;
 
 	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
-	if (philo->x % 2 == 0)
-		usleep (150000);
+//	if (philo->x % 2 == 0)
+//		usleep (10000);
 	while (!g_argv.all_finished && !g_argv.dead)
 	{
 		philo_routine(philo, colors[(philo->x - 1) % 6]);
+//		printf("STILL IN\n");
 	}
-	printf("OUT\n");
+//	printf("OUT\n");
 	return (NULL);
 }
 
@@ -100,6 +103,7 @@ void	*ft_philo_checker(void *arg)
 			g_argv.all_finished = true;
 		if (ft_time() - philo->t_last_meal > g_argv.dying / 1000)
 		{
+//			sleep(5);
 			ft_print(philo->x, "died", RESET);
 			g_argv.dead = true;
 		}
@@ -136,7 +140,14 @@ int	main(int argc, char *argv[])
 	{
 		if (pthread_create(&th[n], NULL, philo_thread, &(philo[n]->x)) != 0)
 			return (1);
-		n++;
+		n += 2;
+	}
+	n = 1;
+	while (n < g_argv.n_philos)
+	{
+		if (pthread_create(&th[n], NULL, philo_thread, &(philo[n]->x)) != 0)
+			return (1);
+		n += 2;
 	}
 	pthread_t *checker;
 	checker = malloc(sizeof(pthread_t) * g_argv.n_philos);

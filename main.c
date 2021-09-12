@@ -3,6 +3,33 @@
 pthread_mutex_t *fork_x;
 pthread_mutex_t print_lock;
 
+int	ft_exit(t_philos **philo, pthread_t *th, pthread_t *checker)
+{
+	int i;
+	
+	i = 0;
+	while (i < g_argv.n_philos)
+	{
+		if (pthread_join(th[i], NULL) != 0)
+			return (1);
+		if (pthread_join(checker[i], NULL) != 0)
+			return (1);
+		i++;
+	}
+	i = -1;
+	while (++i < g_argv.n_philos)
+	{
+		pthread_mutex_destroy(&fork_x[i]);
+		printf("%d %d t_last_meal\n", philo[i]->t_last_meal, i + 1); //remove
+		free(philo[i]);
+	}
+	pthread_mutex_destroy(&print_lock);
+	free(fork_x);
+	free(th);
+	free(checker);
+	free(philo);
+}
+
 void	ft_print(int philo, char *str, char *color)
 {
 	if (!g_argv.all_finished && !g_argv.dead)
@@ -15,22 +42,33 @@ void	ft_print(int philo, char *str, char *color)
 
 void	philo_routine(t_philos *philo, char *color)
 {
-	pthread_mutex_lock(&fork_x[philo->x - 1]);
-	ft_print(philo->x, "has taken a fork", color);
-	philo->t_last_meal = ft_time();
-	pthread_mutex_lock(&fork_x[philo->x % g_argv.n_philos]);
-	ft_print(philo->x, "has taken a fork", color);
-	ft_print(philo->x, "is eating", color);
-	philo->n_eaten += 1;
-	if (philo->n_eaten == g_argv.n_to_eat)
-		g_argv.philo_finished += 1;
-	usleep(g_argv.eating);
-	philo->t_last_meal = ft_time();
-	pthread_mutex_unlock(&fork_x[philo->x - 1]);
-	pthread_mutex_unlock(&fork_x[philo->x % g_argv.n_philos]);
-	ft_print(philo->x, "is sleeping", color);
-	usleep(g_argv.sleeping);
-	ft_print(philo->x, "is thinking", color);
+		// g_argv.dead = true;
+	while (!g_argv.all_finished && !g_argv.dead)
+	{
+		pthread_mutex_lock(&fork_x[philo->x - 1]);
+		ft_print(philo->x, "has taken a fork", color);
+		philo->t_last_meal = ft_time();
+		if (g_argv.n_philos == 1)
+		{
+			printf("ONLY ONE\n");
+			break;
+		}
+		printf("ONLY TWO\n");
+		pthread_mutex_lock(&fork_x[philo->x % g_argv.n_philos]);
+		ft_print(philo->x, "has taken a fork", color);
+		ft_print(philo->x, "is eating", color);
+		philo->n_eaten += 1;
+		if (philo->n_eaten == g_argv.n_to_eat)
+			g_argv.philo_finished += 1;
+		usleep(g_argv.eating);
+		philo->t_last_meal = ft_time();
+		pthread_mutex_unlock(&fork_x[philo->x - 1]);
+		pthread_mutex_unlock(&fork_x[philo->x % g_argv.n_philos]);
+		ft_print(philo->x, "is sleeping", color);
+		usleep(g_argv.sleeping);
+		ft_print(philo->x, "is thinking", color);
+	}
+	printf("HERE\n");
 }
 
 void *philo_thread(void *arg)
@@ -45,6 +83,7 @@ void *philo_thread(void *arg)
 	{
 		philo_routine(philo, colors[(philo->x - 1) % 6]);
 	}
+	printf("OUT\n");
 	return (NULL);
 }
 
@@ -108,25 +147,5 @@ int	main(int argc, char *argv[])
 			return (1);
 		n++;
 	}
-	i = 0;
-	while (i < g_argv.n_philos)
-	{
-		if (pthread_join(th[i], NULL) != 0)
-			return (1);
-		if (pthread_join(checker[i], NULL) != 0)
-			return (1);
-		i++;
-	}
-	n = -1;
-	while (++n < g_argv.n_philos)
-	{
-		pthread_mutex_destroy(&fork_x[n]);
-		printf("%d %d t_last_meal\n", philo[n]->t_last_meal, n + 1);
-		free(philo[n]);
-	}
-	pthread_mutex_destroy(&print_lock);
-	free(fork_x);
-	free(th);
-	free(checker);
-	free(philo);
+	ft_exit(philo, th, checker);
 }

@@ -22,7 +22,6 @@ int	ft_atoi(const char *str)
 	return (tot * (long)flag);
 }
 
-//have condition for the optional value as well
 bool	ft_init_arg(int argc, char *argv[])
 {
 	if (argc != 5 && argc != 6)
@@ -36,11 +35,22 @@ bool	ft_init_arg(int argc, char *argv[])
 	g_argv.dying = ft_atoi(argv[2]) * 1000;
 	g_argv.eating = ft_atoi(argv[3]) * 1000;
 	g_argv.sleeping = ft_atoi(argv[4]) * 1000;
-	if (g_argv.dying < 0 || g_argv.eating < 0 || g_argv.sleeping < 0)
+	if (g_argv.n_philos < 0 || g_argv.dying < 0 || g_argv.eating < 0 || g_argv.sleeping < 0)
 	{
 		printf("\033[0;31mInput positive values only\033[0m\n");
 		return (false);
 	}
+	if (argv[5])
+	{
+		g_argv.n_to_eat = ft_atoi(argv[5]);
+		if (g_argv.n_to_eat < 0)
+			{
+				printf("\033[0;31mInput positive values only\033[0m\n");
+				return (false);
+			}
+	}
+	else
+		g_argv.n_to_eat = -1;
 	return (true);
 }
 
@@ -52,4 +62,44 @@ int	ft_time(void)
 	gettimeofday(&time, NULL);
 	millisecond = time.tv_sec % 1000 * 1000 + time.tv_usec / 1000;
 	return ((int)millisecond);
+}
+
+void	ft_philo_check(t_philos **philo, pthread_mutex_t death_lock)
+{
+	int i;
+
+	// sleep(5);
+	// if (philo[3]->t_last_meal)
+	// 	printf("LAST MEAL\n");
+	// else
+	// 	printf("NO MEAL\n");
+	// while (!g_argv.dead)
+	// {
+		// if (philo[0]->t_last_meal)
+			// if (ft_time() - philo[0]->t_last_meal > g_argv.dying)
+		// i = 0;
+		// while (i < g_argv.n_philos && philo[i]->t_last_meal)
+		// {
+		// 	pthread_mutex_lock(&death_lock);
+		// 	if (ft_time() - philo[i]->t_last_meal > g_argv.dying)
+			// {
+				// g_argv.dead = true;
+				// printf("DEAD! %d @ %d\n", i + 1, ft_time());
+			// }
+		// 	pthread_mutex_unlock(&death_lock);
+		// 	i++;
+		// }
+	// }
+	// bool done;
+	i = 0;
+	// while (!g_argv.all_finished)
+	// {
+		while (i < g_argv.n_philos && g_argv.n_to_eat != -1)
+		{
+			if (philo[i]->n_eaten >= g_argv.n_to_eat)
+				i++;
+		}
+		if (g_argv.n_to_eat != -1)
+			g_argv.all_finished = true;
+	// }
 }

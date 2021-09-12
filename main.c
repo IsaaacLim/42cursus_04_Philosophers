@@ -6,7 +6,7 @@ pthread_mutex_t death_lock;
 
 void	ft_print(int philo, char *str, char *color)
 {
-	if (!g_argv.dead)
+	if (!g_argv.all_finished && !g_argv.dead)
 	{
 		pthread_mutex_lock(&print_lock);
 		printf("%d %s%i %s%s\n", ft_time(), color, philo, str, RESET);
@@ -18,14 +18,15 @@ void	philo_routine(t_philos *philo, char *color)
 {
 	pthread_mutex_lock(&fork_x[philo->x - 1]);
 	ft_print(philo->x, "has taken a fork", color);
+	philo->t_last_meal = ft_time();
 	pthread_mutex_lock(&fork_x[philo->x % g_argv.n_philos]);
 	ft_print(philo->x, "has taken a fork", color);
 	ft_print(philo->x, "is eating", color);
-	usleep(g_argv.eating);
-	philo->t_last_meal = ft_time();
 	philo->n_eaten += 1;
 	if (philo->n_eaten == g_argv.n_to_eat)
 		g_argv.philo_finished += 1;
+	usleep(g_argv.eating);
+	philo->t_last_meal = ft_time();
 	pthread_mutex_unlock(&fork_x[philo->x - 1]);
 	pthread_mutex_unlock(&fork_x[philo->x % g_argv.n_philos]);
 	ft_print(philo->x, "is sleeping", color);

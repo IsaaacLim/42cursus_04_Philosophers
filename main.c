@@ -48,15 +48,9 @@ void	philo_routine(t_philos *philo, char *color)
 	{
 		pthread_mutex_lock(&fork_x[philo->x - 1]);
 		ft_print(philo->x, "has taken a fork", color);
-//		philo->t_last_meal = ft_time();
-//		if (g_argv.n_philos == 1)
-//		{
-//			printf("ONLY ONE\n");
-//			break;
-//		}
-//		printf("ONLY TWO\n");
 		pthread_mutex_lock(&fork_x[philo->x % g_argv.n_philos]);
 		ft_print(philo->x, "has taken a fork", color);
+		usleep(50);
 		philo->t_last_meal = ft_time();
 		ft_print(philo->x, "is eating", color);
 		philo->n_eaten += 1;
@@ -79,12 +73,12 @@ void *philo_thread(void *arg)
 	philo = (t_philos *)arg;
 
 	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
-//	if (philo->x % 2 == 0)
-//		usleep (10000);
+	if (philo->x % 2 == 0)
+		usleep (15000);
 	while (!g_argv.all_finished && !g_argv.dead)
 	{
+		//ft_print(philo->x, "Immediate", colors[(philo->x - 1) % 6]);
 		philo_routine(philo, colors[(philo->x - 1) % 6]);
-//		printf("STILL IN\n");
 	}
 //	printf("OUT\n");
 	return (NULL);
@@ -103,9 +97,12 @@ void	*ft_philo_checker(void *arg)
 			g_argv.all_finished = true;
 		if (ft_time() - philo->t_last_meal > g_argv.dying / 1000)
 		{
-//			sleep(5);
-			ft_print(philo->x, "died", RESET);
-			g_argv.dead = true;
+			usleep(50);
+			if (ft_time() - philo->t_last_meal > g_argv.dying / 1000)
+			{
+				ft_print(philo->x, "died", RESET);
+				g_argv.dead = true;
+			}
 		}
 	}
 	return (NULL);
@@ -140,14 +137,7 @@ int	main(int argc, char *argv[])
 	{
 		if (pthread_create(&th[n], NULL, philo_thread, &(philo[n]->x)) != 0)
 			return (1);
-		n += 2;
-	}
-	n = 1;
-	while (n < g_argv.n_philos)
-	{
-		if (pthread_create(&th[n], NULL, philo_thread, &(philo[n]->x)) != 0)
-			return (1);
-		n += 2;
+		n += 1;
 	}
 	pthread_t *checker;
 	checker = malloc(sizeof(pthread_t) * g_argv.n_philos);

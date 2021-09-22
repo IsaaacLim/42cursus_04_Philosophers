@@ -40,6 +40,8 @@ struct s_philo_info {
 
 typedef struct s_philos {
 	int	x;
+	int fork_a;
+	int fork_b;
 	int	t_last_meal;
 	int	n_eaten;
 }	t_philos;
@@ -48,7 +50,7 @@ typedef struct s_philos {
 bool	ft_init_arg(int argc, char *argv[]);
 int		ft_atoi(const char *str);
 int		ft_time(void);
-void	ft_print(int philo, char *str, char *color);
+//void	ft_print(int philo, char *str, char *color);
 
 
 #endif

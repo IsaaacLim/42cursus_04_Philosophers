@@ -33,14 +33,14 @@ void *ft_philo_checker(void *arg)
 	philo = (t_philos *)arg;
 	while (!g_argv.all_finished && !g_argv.dead)
 	{
-		if (g_argv.all_finished == g_argv.n_philos)
+		if (g_argv.philo_finished == g_argv.n_philos)
 			g_argv.all_finished = true;
 		i = 0;
 		while (i < g_argv.n_philos)
 		{
 			if (philo[i].t_last_meal != 0)
 			{
-				if (ft_time() - philo[i].t_last_meal > (g_argv.life_span / 1000))
+				if (ft_time() - philo[i].t_last_meal > (g_argv.life_span / 1000) + 5)
 				{
 					ft_print(philo[i].x, "died", RESET);
 					g_argv.dead = true;
@@ -116,10 +116,7 @@ void *ft_philo_thread(void *arg)
 	if (philo->x % 2 == 1 && philo->x != 1)
 		usleep (15000);
 	while (!g_argv.all_finished && !g_argv.dead)
-	{
 		philo_routine(philo, colors[(philo->x - 1) % 6]);
-		i++;
-	}
 	return (NULL);
 }
 

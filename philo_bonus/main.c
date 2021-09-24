@@ -40,7 +40,7 @@ void *ft_philo_checker(void *arg)
 		{
 			if (philo[i].t_last_meal != 0)
 			{
-				if (ft_time() - philo[i].t_last_meal > (g_argv.life_span / 1000) + 5)
+				if (ft_time() - philo[i].t_last_meal > g_argv.life_span + 2)
 				{
 					ft_print(philo[i].x, "died", RESET);
 					g_argv.dead = true;
@@ -49,8 +49,6 @@ void *ft_philo_checker(void *arg)
 			i++;
 		}
 	}
-	// for (int i = 0; i < g_argv.n_philos; i++)
-		// printf("From checker %d\n", philo[i].x);
 	return (NULL);
 }
 
@@ -85,35 +83,27 @@ void	ft_sleep(int duration)
 
 	time = ft_time();
 	while (ft_time() - time < duration)
-		usleep(5000);
+		usleep(500);
 }
 
 void	philo_routine(t_philos *philo, char *color)
 {
-		pthread_mutex_lock(&g_fork[philo->fork_a]);
-		// ft_print(philo->x, "has taken a fork");
-		ft_print(philo->x, "has taken a fork", color);
-	//	printf("\t%d\n", philo->fork_a);
-		pthread_mutex_lock(&g_fork[philo->fork_b]);
-		// ft_print(philo->x, "has taken a fork");
-		ft_print(philo->x, "has taken a fork", color);
-	//	printf("\t%d\n", philo->fork_b);
-	//	usleep(50);
-		philo->t_last_meal = ft_time();
-		// ft_print(philo->x, "is eating");
-		ft_print(philo->x, "is eating", color);
-		philo->n_eaten += 1;
-		if (philo->n_eaten == g_argv.n_to_eat)
-			g_argv.philo_finished += 1;
-		ft_sleep(g_argv.eating);
-		pthread_mutex_unlock(&g_fork[philo->fork_a]);
-		pthread_mutex_unlock(&g_fork[philo->fork_b]);
-		// ft_print(philo->x, "is sleeping");
-		ft_print(philo->x, "is sleeping", color);
-		ft_sleep(g_argv.sleeping);
-		// ft_print(philo->x, "is thinking");
-		ft_print(philo->x, "is thinking", color);
-		usleep(50);
+	pthread_mutex_lock(&g_fork[philo->fork_a]);
+	ft_print(philo->x, "has taken a fork", color);
+	pthread_mutex_lock(&g_fork[philo->fork_b]);
+	ft_print(philo->x, "has taken a fork", color);
+	philo->t_last_meal = ft_time();
+	ft_print(philo->x, "is eating", color);
+	philo->n_eaten += 1;
+	if (philo->n_eaten == g_argv.n_to_eat)
+		g_argv.philo_finished += 1;
+	ft_sleep(g_argv.eating);
+	pthread_mutex_unlock(&g_fork[philo->fork_a]);
+	pthread_mutex_unlock(&g_fork[philo->fork_b]);
+	ft_print(philo->x, "is sleeping", color);
+	ft_sleep(g_argv.sleeping);
+	ft_print(philo->x, "is thinking", color);
+	usleep(50);
 }
 
 void *ft_philo_thread(void *arg)

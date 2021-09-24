@@ -25,23 +25,24 @@
 // 	// }
 // }
 
-void *philo_thread(void *arg)
+void *ft_philo_checker(void *arg)
 {
 	t_philos *philo;
 	philo = (t_philos *)arg;
 
-	for (int i = 0; i < 2; i++)
-		printf("Thread %d\n", philo[i].fork_a);
+	for (int i = 0; i < g_argv.n_philos; i++)
+		printf("From checker %d\n", philo[i].x);
 	return (NULL);
 }
 
-void philo_init(t_philos *philo)
+void ft_init_philo(t_philos *philo)
 {
 	int i;
 
 	i = 0;
 	while (i < g_argv.n_philos)
 	{
+		pthread_mutex_init(&g_fork[i], NULL);
 		philo[i].x = i + 1;
 		if (i % 2 == 0)
 		{
@@ -59,19 +60,37 @@ void philo_init(t_philos *philo)
 	}
 }
 
+void *ft_philo_thread(void *arg)
+{
+	t_philos *philo;
+	philo = (t_philos *)arg;
+
+	printf("Thread %d\n", philo->x);
+	return (NULL);
+}
+
 //test with 0 philo input
 int main(int argc, char *argv[])
 {
-	int n;
-	pthread_t th[3];
-	t_philos *philo;
+	int			i;
+	pthread_t	*th;
+	t_philos	*philo;
+	pthread_t	checker;
 
 	if (!(ft_init_arg(argc, argv)))
 		return (-1);
+	th = malloc(sizeof(pthread_t) * g_argv.n_philos);
 	philo = malloc(sizeof(t_philos) * g_argv.n_philos);
-	philo_init(philo);
-	printf("%d\n", philo[3].fork_b);
-	pthread_create(&th[0], NULL, philo_thread, philo);
-	pthread_join(th[0], NULL);
-	free(philo);
+	g_fork = malloc(sizeof(pthread_mutex_t) * g_argv.n_philos);
+	ft_init_philo(philo);
+	pthread_mutex_init(&g_print_lock, NULL);
+	i = -1;
+	while (++i < g_argv.n_philos)
+	{
+		if (pthread_create(&th[i], NULL, ft_philo_thread, &philo[i]) != 0)
+			return (1);
+	}
+	if (pthread_create(&checker, NULL, ft_philo_checker, philo) != 0)
+		return (1);
+	ft_exit(philo, th, checker);
 }

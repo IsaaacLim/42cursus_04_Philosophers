@@ -29,7 +29,10 @@ typedef struct s_philos {
 	int	n_eaten;
 }	t_philos;
 
+pthread_mutex_t	*g_fork;
+pthread_mutex_t	g_print_lock;
+
 bool	ft_init_arg(int argc, char *argv[]);
 int		ft_time(void);
-
+int		ft_exit(t_philos *philo, pthread_t *th, pthread_t checker);
 #endif

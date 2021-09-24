@@ -65,3 +65,28 @@ int	ft_time(void)
 	millisecond = time.tv_sec % 1000 * 1000 + time.tv_usec / 1000;
 	return ((int)millisecond);
 }
+
+int	ft_exit(t_philos *philo, pthread_t *th, pthread_t checker)
+{
+	int i;
+
+	i = -1;
+	while (++i < g_argv.n_philos)
+	{
+		if (pthread_join(th[i], NULL) != 0)
+			return (1);
+	}
+	if (pthread_join(checker, NULL) != 0)
+		return (1);
+	i = -1;
+	while (++i < g_argv.n_philos)
+	{
+		if (pthread_mutex_destroy(&g_fork[i]) != 0)
+			return (1);
+	}
+	if (pthread_mutex_destroy(&g_print_lock) != 0)
+		return (1);
+	free(th);
+	free(philo);
+	free(g_fork);
+}

@@ -56,14 +56,26 @@ bool	ft_init_arg(int argc, char *argv[])
 	return (true);
 }
 
+// void	ft_print(int philo, char *str)
+void	ft_print(int philo_x, char *str, char *color)
+{
+	if (!g_argv.all_finished && !g_argv.dead)
+	{
+		pthread_mutex_lock(&g_print_lock);
+		// printf("%d %i %s\n", ft_time(), philo_x, str);
+		printf("%d %s%i %s%s\n", ft_time(), color, philo_x, str, RESET);
+		pthread_mutex_unlock(&g_print_lock);
+	}
+}
+
 int	ft_time(void)
 {
 	struct timeval	time;
-	long			millisecond;
+	long			milliseconds;
 
 	gettimeofday(&time, NULL);
-	millisecond = time.tv_sec % 1000 * 1000 + time.tv_usec / 1000;
-	return ((int)millisecond);
+	milliseconds = time.tv_sec % 1000 * 1000 + time.tv_usec / 1000;
+	return ((int)milliseconds);
 }
 
 int	ft_exit(t_philos *philo, pthread_t *th, pthread_t checker)
@@ -89,4 +101,5 @@ int	ft_exit(t_philos *philo, pthread_t *th, pthread_t checker)
 	free(th);
 	free(philo);
 	free(g_fork);
+	return (0);
 }

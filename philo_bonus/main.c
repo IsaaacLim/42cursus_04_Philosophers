@@ -27,11 +27,30 @@
 
 void *ft_philo_checker(void *arg)
 {
-	t_philos *philo;
-	philo = (t_philos *)arg;
+	int			i;
+	t_philos	*philo;
 
-	for (int i = 0; i < g_argv.n_philos; i++)
-		printf("From checker %d\n", philo[i].x);
+	philo = (t_philos *)arg;
+	while (!g_argv.all_finished && !g_argv.dead)
+	{
+		if (g_argv.all_finished == g_argv.n_philos)
+			g_argv.all_finished = true;
+		i = 0;
+		while (i < g_argv.n_philos)
+		{
+			if (philo[i].t_last_meal != 0)
+			{
+				if (ft_time() - philo[i].t_last_meal > (g_argv.life_span / 1000))
+				{
+					ft_print(philo[i].x, "died", RESET);
+					g_argv.dead = true;
+				}
+			}
+			i++;
+		}
+	}
+	// for (int i = 0; i < g_argv.n_philos; i++)
+		// printf("From checker %d\n", philo[i].x);
 	return (NULL);
 }
 
@@ -60,12 +79,47 @@ void ft_init_philo(t_philos *philo)
 	}
 }
 
+void	philo_routine(t_philos *philo, char *color)
+{
+		pthread_mutex_lock(&g_fork[philo->fork_a]);
+		// ft_print(philo->x, "has taken a fork");
+		ft_print(philo->x, "has taken a fork", color);
+	//	printf("\t%d\n", philo->fork_a);
+		pthread_mutex_lock(&g_fork[philo->fork_b]);
+		// ft_print(philo->x, "has taken a fork");
+		ft_print(philo->x, "has taken a fork", color);
+	//	printf("\t%d\n", philo->fork_b);
+	//	usleep(50);
+		philo->t_last_meal = ft_time();
+		// ft_print(philo->x, "is eating");
+		ft_print(philo->x, "is eating", color);
+		philo->n_eaten += 1;
+		if (philo->n_eaten == g_argv.n_to_eat)
+			g_argv.philo_finished += 1;
+		usleep(g_argv.eating);
+		pthread_mutex_unlock(&g_fork[philo->fork_a]);
+		pthread_mutex_unlock(&g_fork[philo->fork_b]);
+		// ft_print(philo->x, "is sleeping");
+		ft_print(philo->x, "is sleeping", color);
+		usleep(g_argv.sleeping);
+		// ft_print(philo->x, "is thinking");
+		ft_print(philo->x, "is thinking", color);
+		usleep(50);
+}
+
 void *ft_philo_thread(void *arg)
 {
 	t_philos *philo;
 	philo = (t_philos *)arg;
 
-	printf("Thread %d\n", philo->x);
+	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
+	if (philo->x % 2 == 1 && philo->x != 1)
+		usleep (15000);
+	while (!g_argv.all_finished && !g_argv.dead)
+	{
+		philo_routine(philo, colors[(philo->x - 1) % 6]);
+		i++;
+	}
 	return (NULL);
 }
 

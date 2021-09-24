@@ -114,8 +114,13 @@ void *ft_philo_thread(void *arg)
 	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
 	if (philo->x % 2 == 1)
 		usleep(10000);
-	while (!g_argv.all_finished && !g_argv.dead)
+	while (!g_argv.all_finished && !g_argv.dead && g_argv.n_philos != 1)
 		philo_routine(philo, colors[(philo->x - 1) % 6]);
+	if (g_argv.n_philos == 1)
+	{
+		ft_print(philo->x, "has taken a fork", RED);
+		philo->t_last_meal = ft_time();
+	}
 	return (NULL);
 }
 

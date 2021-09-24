@@ -34,8 +34,8 @@ bool	ft_init_arg(int argc, char *argv[])
 	}
 	g_argv.n_philos = ft_atoi(argv[1]);
 	g_argv.life_span = ft_atoi(argv[2]) * 1000;
-	g_argv.eating = ft_atoi(argv[3]) * 1000;
-	g_argv.sleeping = ft_atoi(argv[4]) * 1000;
+	g_argv.eating = ft_atoi(argv[3]);
+	g_argv.sleeping = ft_atoi(argv[4]);
 	if (g_argv.n_philos < 0 || g_argv.life_span < 0 || g_argv.eating < 0 || g_argv.sleeping < 0)
 	{
 		printf("\033[0;31mInput positive values only\033[0m\n");

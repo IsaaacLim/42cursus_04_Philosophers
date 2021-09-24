@@ -79,6 +79,15 @@ void ft_init_philo(t_philos *philo)
 	}
 }
 
+void	ft_sleep(int duration)
+{
+	int	time;
+
+	time = ft_time();
+	while (ft_time() - time < duration)
+		usleep(5000);
+}
+
 void	philo_routine(t_philos *philo, char *color)
 {
 		pthread_mutex_lock(&g_fork[philo->fork_a]);
@@ -96,12 +105,12 @@ void	philo_routine(t_philos *philo, char *color)
 		philo->n_eaten += 1;
 		if (philo->n_eaten == g_argv.n_to_eat)
 			g_argv.philo_finished += 1;
-		usleep(g_argv.eating);
+		ft_sleep(g_argv.eating);
 		pthread_mutex_unlock(&g_fork[philo->fork_a]);
 		pthread_mutex_unlock(&g_fork[philo->fork_b]);
 		// ft_print(philo->x, "is sleeping");
 		ft_print(philo->x, "is sleeping", color);
-		usleep(g_argv.sleeping);
+		ft_sleep(g_argv.sleeping);
 		// ft_print(philo->x, "is thinking");
 		ft_print(philo->x, "is thinking", color);
 		usleep(50);

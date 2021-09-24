@@ -113,8 +113,8 @@ void *ft_philo_thread(void *arg)
 	philo = (t_philos *)arg;
 
 	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
-	if (philo->x % 2 == 1 && philo->x != 1)
-		usleep (15000);
+	if (philo->x % 2 == 1)
+		usleep(10000);
 	while (!g_argv.all_finished && !g_argv.dead)
 		philo_routine(philo, colors[(philo->x - 1) % 6]);
 	return (NULL);

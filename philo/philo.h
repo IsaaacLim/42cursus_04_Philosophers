@@ -40,8 +40,15 @@ typedef struct s_philos {
 pthread_mutex_t	*g_fork;
 pthread_mutex_t	g_print_lock;
 
+/* INITIALIZE.C */
 bool	ft_init_arg(int argc, char *argv[]);
+void	ft_init_philo(t_philos *philo);
+
+/* UTILS.C */
+int		ft_atoi(const char *str);
 int		ft_time(void);
 void	ft_print(int philo_x, char *str, char *color);
-int		ft_exit(t_philos *philo, pthread_t *th);
+void	ft_sleep(int duration);
+
+
 #endif

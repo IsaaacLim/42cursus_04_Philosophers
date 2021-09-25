@@ -1,65 +1,6 @@
 #include "philo.h"
 
-void *ft_philo_checker(t_philos *philo)
-{
-	int			i;
-
-	while (!g_argv.all_finished && !g_argv.dead)
-	{
-		if (g_argv.philo_finished == g_argv.n_philos)
-			g_argv.all_finished = true;
-		i = 0;
-		while (i < g_argv.n_philos)
-		{
-			if (philo[i].t_last_meal != 0)
-			{
-				if (ft_time() - philo[i].t_last_meal > g_argv.life_span)
-				{
-					ft_print(philo[i].x, "died", RESET);
-					g_argv.dead = true;
-				}
-			}
-			i++;
-		}
-	}
-	return (NULL);
-}
-
-void ft_init_philo(t_philos *philo)
-{
-	int i;
-
-	i = 0;
-	while (i < g_argv.n_philos)
-	{
-		pthread_mutex_init(&g_fork[i], NULL);
-		philo[i].x = i + 1;
-		if (i % 2 == 0)
-		{
-			philo[i].fork_a = (i + 1) % g_argv.n_philos;
-			philo[i].fork_b = i;
-		}
-		else
-		{
-			philo[i].fork_a = i;
-			philo[i].fork_b = (i + 1) % g_argv.n_philos;
-		}
-		philo[i].n_eaten = 0;
-		philo[i].t_last_meal = 0;
-		i++;
-	}
-}
-
-void	ft_sleep(int duration)
-{
-	int	time;
-
-	time = ft_time();
-	while (ft_time() - time < duration)
-		usleep(500);
-}
-
-void	philo_routine(t_philos *philo, char *color)
+static void	philo_routine(t_philos *philo, char *color)
 {
 	pthread_mutex_lock(&g_fork[philo->fork_a]);
 	ft_print(philo->x, "has taken a fork", color);
@@ -79,7 +20,7 @@ void	philo_routine(t_philos *philo, char *color)
 	usleep(50);
 }
 
-void *ft_philo_thread(void *arg)
+static void	*ft_philo_thread(void *arg)
 {
 	t_philos *philo;
 	philo = (t_philos *)arg;
@@ -95,6 +36,54 @@ void *ft_philo_thread(void *arg)
 		philo->t_last_meal = ft_time();
 	}
 	return (NULL);
+}
+
+static void	*ft_philo_checker(t_philos *philo)
+{
+	int			i;
+
+	while (!g_argv.all_finished && !g_argv.dead)
+	{
+		if (g_argv.philo_finished == g_argv.n_philos)
+			g_argv.all_finished = true;
+		i = -1;
+		while (++i < g_argv.n_philos)
+		{
+			if (philo[i].t_last_meal != 0)
+			{
+				if (ft_time() - philo[i].t_last_meal > g_argv.life_span)
+				{
+					ft_print(philo[i].x, "died", RESET);
+					g_argv.dead = true;
+				}
+			}
+		}
+	}
+	return (NULL);
+}
+
+static int	ft_exit(t_philos *philo, pthread_t *th)
+{
+	int i;
+
+	i = -1;
+	while (++i < g_argv.n_philos)
+	{
+		if (pthread_join(th[i], NULL) != 0)
+			return (1);
+	}
+	i = -1;
+	while (++i < g_argv.n_philos)
+	{
+		if (pthread_mutex_destroy(&g_fork[i]) != 0)
+			return (1);
+	}
+	if (pthread_mutex_destroy(&g_print_lock) != 0)
+		return (1);
+	free(th);
+	free(philo);
+	free(g_fork);
+	return (0);
 }
 
 int main(int argc, char *argv[])

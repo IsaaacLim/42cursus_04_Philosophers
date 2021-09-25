@@ -15,7 +15,7 @@ void *ft_philo_checker(void *arg)
 		{
 			if (philo[i].t_last_meal != 0)
 			{
-				if (ft_time() - philo[i].t_last_meal > g_argv.life_span + 2)
+				if (ft_time() - philo[i].t_last_meal > g_argv.life_span)
 				{
 					ft_print(philo[i].x, "died", RESET);
 					g_argv.dead = true;

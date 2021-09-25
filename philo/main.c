@@ -1,38 +1,37 @@
 #include "philo.h"
 
-static void	philo_routine(t_philos *philo, char *color)
+static void	philo_routine(t_philos *philo)
 {
 	pthread_mutex_lock(&g_fork[philo->fork_a]);
-	ft_print(philo->x, "has taken a fork", color);
+	ft_print(philo->x, "has taken a fork", philo->color);
 	pthread_mutex_lock(&g_fork[philo->fork_b]);
-	ft_print(philo->x, "has taken a fork", color);
+	ft_print(philo->x, "has taken a fork", philo->color);
 	philo->t_last_meal = ft_time();
-	ft_print(philo->x, "is eating", color);
+	ft_print(philo->x, "is eating", philo->color);
 	philo->n_eaten += 1;
 	if (philo->n_eaten == g_argv.n_to_eat)
 		g_argv.philo_finished += 1;
 	ft_sleep(g_argv.eating);
 	pthread_mutex_unlock(&g_fork[philo->fork_a]);
 	pthread_mutex_unlock(&g_fork[philo->fork_b]);
-	ft_print(philo->x, "is sleeping", color);
+	ft_print(philo->x, "is sleeping", philo->color);
 	ft_sleep(g_argv.sleeping);
-	ft_print(philo->x, "is thinking", color);
+	ft_print(philo->x, "is thinking", philo->color);
 	usleep(50);
 }
 
 static void	*ft_philo_thread(void *arg)
 {
-	t_philos *philo;
-	philo = (t_philos *)arg;
+	t_philos	*philo;
 
-	char colors[6][10] = {RED, GREEN, YELLOW, BLUE, PURPLE, CYAN};
+	philo = (t_philos *)arg;
 	if (philo->x % 2 == 1)
 		usleep(10000);
 	while (!g_argv.all_finished && !g_argv.dead && g_argv.n_philos != 1)
-		philo_routine(philo, colors[(philo->x - 1) % 6]);
+		philo_routine(philo);
 	if (g_argv.n_philos == 1)
 	{
-		ft_print(philo->x, "has taken a fork", RED);
+		ft_print(philo->x, "has taken a fork", philo->color);
 		philo->t_last_meal = ft_time();
 	}
 	return (NULL);
@@ -64,7 +63,7 @@ static void	*ft_philo_checker(t_philos *philo)
 
 static int	ft_exit(t_philos *philo, pthread_t *th)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < g_argv.n_philos)
@@ -86,7 +85,7 @@ static int	ft_exit(t_philos *philo, pthread_t *th)
 	return (0);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	int			i;
 	pthread_t	*th;

@@ -33,12 +33,25 @@ bool	ft_init_arg(int argc, char *argv[])
 	return (true);
 }
 
+static void	ft_stdout_color(char *philo_color, int i)
+{
+	char	colors[6][10];
+
+	ft_strncpy(colors[0], RED, 10);
+	ft_strncpy(colors[1], GREEN, 10);
+	ft_strncpy(colors[2], YELLOW, 10);
+	ft_strncpy(colors[3], BLUE, 10);
+	ft_strncpy(colors[4], PURPLE, 10);
+	ft_strncpy(colors[5], CYAN, 10);
+	ft_strncpy(philo_color, colors[i % 6], 10);
+}
+
 void ft_init_philo(t_philos *philo)
 {
 	int i;
 
-	i = 0;
-	while (i < g_argv.n_philos)
+	i = -1;
+	while (++i < g_argv.n_philos)
 	{
 		pthread_mutex_init(&g_fork[i], NULL);
 		philo[i].x = i + 1;
@@ -54,6 +67,6 @@ void ft_init_philo(t_philos *philo)
 		}
 		philo[i].n_eaten = 0;
 		philo[i].t_last_meal = 0;
-		i++;
+		ft_stdout_color(philo[i].color, i);
 	}
 }

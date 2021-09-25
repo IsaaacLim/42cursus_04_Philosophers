@@ -17,11 +17,12 @@
 # define RESET "\033[0;0m"
 
 typedef struct s_philos {
-	int	x;
-	int	fork_a;
-	int	fork_b;
-	int	t_last_meal;
-	int	n_eaten;
+	int		x;
+	int		fork_a;
+	int		fork_b;
+	int		t_last_meal;
+	int		n_eaten;
+	char	color[10];
 }	t_philos;
 
 struct s_argv {
@@ -48,5 +49,6 @@ int		ft_atoi(const char *str);
 int		ft_time(void);
 void	ft_print(int philo_x, char *str, char *color);
 void	ft_sleep(int duration);
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
 #endif

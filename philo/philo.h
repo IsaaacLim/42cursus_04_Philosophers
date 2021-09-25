@@ -16,6 +16,14 @@
 # define CYAN "\033[0;36m"
 # define RESET "\033[0;0m"
 
+typedef struct s_philos {
+	int	x;
+	int	fork_a;
+	int	fork_b;
+	int	t_last_meal;
+	int	n_eaten;
+}	t_philos;
+
 struct s_argv {
 	int		n_philos;
 	int		life_span;
@@ -26,16 +34,7 @@ struct s_argv {
 	bool	all_finished;
 	bool	dead;
 };
-
-struct s_argv g_argv;
-
-typedef struct s_philos {
-	int	x;
-	int	fork_a;
-	int	fork_b;
-	int	t_last_meal;
-	int	n_eaten;
-}	t_philos;
+struct s_argv	g_argv;
 
 pthread_mutex_t	*g_fork;
 pthread_mutex_t	g_print_lock;
@@ -49,6 +48,5 @@ int		ft_atoi(const char *str);
 int		ft_time(void);
 void	ft_print(int philo_x, char *str, char *color);
 void	ft_sleep(int duration);
-
 
 #endif

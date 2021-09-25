@@ -78,7 +78,7 @@ int	ft_time(void)
 	return ((int)milliseconds);
 }
 
-int	ft_exit(t_philos *philo, pthread_t *th, pthread_t checker)
+int	ft_exit(t_philos *philo, pthread_t *th)
 {
 	int i;
 
@@ -88,8 +88,6 @@ int	ft_exit(t_philos *philo, pthread_t *th, pthread_t checker)
 		if (pthread_join(th[i], NULL) != 0)
 			return (1);
 	}
-	if (pthread_join(checker, NULL) != 0)
-		return (1);
 	i = -1;
 	while (++i < g_argv.n_philos)
 	{

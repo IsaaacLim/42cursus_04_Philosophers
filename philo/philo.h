@@ -43,5 +43,5 @@ pthread_mutex_t	g_print_lock;
 bool	ft_init_arg(int argc, char *argv[]);
 int		ft_time(void);
 void	ft_print(int philo_x, char *str, char *color);
-int		ft_exit(t_philos *philo, pthread_t *th, pthread_t checker);
+int		ft_exit(t_philos *philo, pthread_t *th);
 #endif

@@ -1,11 +1,9 @@
 #include "philo.h"
 
-void *ft_philo_checker(void *arg)
+void *ft_philo_checker(t_philos *philo)
 {
 	int			i;
-	t_philos	*philo;
 
-	philo = (t_philos *)arg;
 	while (!g_argv.all_finished && !g_argv.dead)
 	{
 		if (g_argv.philo_finished == g_argv.n_philos)
@@ -99,13 +97,11 @@ void *ft_philo_thread(void *arg)
 	return (NULL);
 }
 
-//test with 0 philo input
 int main(int argc, char *argv[])
 {
 	int			i;
 	pthread_t	*th;
 	t_philos	*philo;
-	pthread_t	checker;
 
 	if (!(ft_init_arg(argc, argv)))
 		return (-1);
@@ -120,7 +116,6 @@ int main(int argc, char *argv[])
 		if (pthread_create(&th[i], NULL, ft_philo_thread, &philo[i]) != 0)
 			return (1);
 	}
-	if (pthread_create(&checker, NULL, ft_philo_checker, philo) != 0)
-		return (1);
-	ft_exit(philo, th, checker);
+	ft_philo_checker(philo);
+	ft_exit(philo, th);
 }

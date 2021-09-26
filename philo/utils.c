@@ -64,7 +64,7 @@ void	ft_print(int philo_x, char *str, char *color)
 	if (!g_argv.all_finished && !g_argv.dead)
 	{
 		pthread_mutex_lock(&g_print_lock);
-		printf("%d %s%i %s%s\n", ft_time(), color, philo_x, str, RESET);
+		printf("%06d %s%i %s%s\n", ft_time(), color, philo_x, str, RESET);
 		pthread_mutex_unlock(&g_print_lock);
 	}
 }

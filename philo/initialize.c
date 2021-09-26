@@ -1,5 +1,27 @@
 #include "philo.h"
 
+static bool	ft_check_neg(int variables)
+{
+	int	argv[5];
+	int	i;
+
+	argv[0] = g_argv.n_philos;
+	argv[1] = g_argv.life_span;
+	argv[2] = g_argv.eating;
+	argv[3] = g_argv.sleeping;
+	argv[4] = g_argv.n_to_eat;
+	i = -1;
+	while (++i < variables)
+	{
+		if (argv[i] < 0)
+		{
+			printf("\033[0;31mInput positive values only\033[0m\n");
+			return (false);
+		}
+	}
+	return (true);
+}
+
 bool	ft_init_arg(int argc, char *argv[])
 {
 	if (argc != 5 && argc != 6)
@@ -13,23 +35,19 @@ bool	ft_init_arg(int argc, char *argv[])
 	g_argv.life_span = ft_atoi(argv[2]);
 	g_argv.eating = ft_atoi(argv[3]);
 	g_argv.sleeping = ft_atoi(argv[4]);
-	if (g_argv.n_philos < 0 || g_argv.life_span < 0 || g_argv.eating < 0 || g_argv.sleeping < 0)
-	{
-		printf("\033[0;31mInput positive values only\033[0m\n");
-		return (false);
-	}
+	g_argv.philo_finished = 0;
 	if (argv[5])
 	{
 		g_argv.n_to_eat = ft_atoi(argv[5]);
-		if (g_argv.n_to_eat < 0)
-			{
-				printf("\033[0;31mInput positive values only\033[0m\n");
-				return (false);
-			}
+		if (!ft_check_neg(5))
+			return (false);
 	}
 	else
+	{
+		if (!ft_check_neg(4))
+			return (false);
 		g_argv.n_to_eat = -1;
-	g_argv.philo_finished = 0;
+	}
 	return (true);
 }
 
@@ -46,9 +64,9 @@ static void	ft_stdout_color(char *philo_color, int i)
 	ft_strncpy(philo_color, colors[i % 6], 10);
 }
 
-void ft_init_philo(t_philos *philo)
+void	ft_init_philo(t_philos *philo)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < g_argv.n_philos)

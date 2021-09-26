@@ -1,22 +1,5 @@
-#include <stdio.h>
+#include "philo_bonus.h"
 
-char *ft_strncpy(char *dest, char *src, unsigned int n)
-{
-	unsigned int i;
-
-	i = 0;
-	while (src[i] != '\0' && i < n)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	while (i < n)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
 int	main()
 {
 	// int id_1;
@@ -41,7 +24,7 @@ int	main()
 	// 		printf("Hellp from %d-%d\n", id_1, id_1);
 	// }
 
-	char *str;
+	char str[10];
 	char *test;
 
 	test = ft_strncpy(str, "Hello", 10);

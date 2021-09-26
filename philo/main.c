@@ -93,6 +93,8 @@ int	main(int argc, char *argv[])
 
 	if (!(ft_init_arg(argc, argv)))
 		return (-1);
+	if (g_argv.n_to_eat == 0)
+		return (0);
 	th = malloc(sizeof(pthread_t) * g_argv.n_philos);
 	philo = malloc(sizeof(t_philos) * g_argv.n_philos);
 	g_fork = malloc(sizeof(pthread_mutex_t) * g_argv.n_philos);

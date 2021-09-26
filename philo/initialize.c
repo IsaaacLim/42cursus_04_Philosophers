@@ -44,9 +44,9 @@ bool	ft_init_arg(int argc, char *argv[])
 	}
 	else
 	{
+		g_argv.n_to_eat = -1;
 		if (!ft_check_neg(4))
 			return (false);
-		g_argv.n_to_eat = -1;
 	}
 	return (true);
 }

@@ -59,7 +59,7 @@ void	ft_init_philo(t_philos *philo)
 	ft_strncpy(colors[4], PURPLE, 10);
 	ft_strncpy(colors[5], CYAN, 10);
 	i = -1;
-	while (++i < 4)
+	while (++i < g_argv.n_philos)
 	{
 		philo[i].x = i + 1;
 		philo[i].n_eaten = 0;

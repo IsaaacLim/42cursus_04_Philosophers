@@ -21,18 +21,18 @@ int	main(int argc, char *argv[])
 	ft_init_arg(argc, argv);
 	ft_strncpy(forks_name, "fork_semaphore", 15);
 	sem_unlink(forks_name);
-	forks_pointer = sem_open(forks_name, O_CREAT, 0660, 3);
+	forks_pointer = sem_open(forks_name, O_CREAT, 0660, g_argv.n_philos);
 	if (forks_pointer == SEM_FAILED)
 	{
 		printf("Sem_open failed\n");
 		exit (0);
 	}
-	philo = malloc(sizeof(t_philos) * 4);
+	philo = malloc(sizeof(t_philos) * g_argv.n_philos);
 	if (!philo)
 		return (1);
 	ft_init_philo(philo);
 	i = -1;
-	while (++i < 4)
+	while (++i < g_argv.n_philos)
 	{
 		philo[i].parent_pid = fork();
 		if (philo[i].parent_pid == 0)
@@ -42,7 +42,7 @@ int	main(int argc, char *argv[])
 		}
 	}
 	i = -1;
-	while (++i < 4)
+	while (++i < g_argv.n_philos)
 	{
 		waitpid(philo[i].parent_pid, NULL, 0);
 	}

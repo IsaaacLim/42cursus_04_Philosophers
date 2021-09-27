@@ -11,7 +11,7 @@ void	ft_philo_process(sem_t *forks, int id)
 {
 	sem_wait(forks);
 	printf("Help from %d\n", id);
-	sleep(3);
+	sleep(1);
 	sem_post(forks);
 }
 
@@ -50,4 +50,8 @@ int	main()
 
 	waitpid(-1, NULL, 0);
 	sem_close(forks);
+
+	printf("%d\n", ft_atoi("  -608"));
+	ft_sleep(200);
+	ft_print(3, "Hello", CYAN);
 }

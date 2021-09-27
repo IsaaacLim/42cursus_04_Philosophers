@@ -6,18 +6,19 @@ void	ft_philo_process(sem_t *forks, int id)
 	sem_wait(forks);
 	sem_wait(forks);
 	printf("Help from %d\n", id);
-	sleep(1);
+	usleep(500000);
 	sem_post(forks);
 	sem_post(forks);
 }
 
-int	main()
+int	main(int argc, char *argv[])
 {
 	t_philos	*philo;
 	sem_t 		*forks_pointer;
 	int			i;
 	char		forks_name[15];
 
+	ft_init_arg(argc, argv);
 	ft_strncpy(forks_name, "fork_semaphore", 15);
 	sem_unlink(forks_name);
 	forks_pointer = sem_open(forks_name, O_CREAT, 0660, 3);

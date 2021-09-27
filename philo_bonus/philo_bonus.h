@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <fcntl.h>
 # include <semaphore.h>
 # include <sys/time.h>
@@ -27,7 +28,20 @@ typedef struct s_philos {
 	char	color[10];
 }	t_philos;
 
+struct s_argv {
+	int		n_philos;
+	int		life_span;
+	int		eating;
+	int		sleeping;
+	int		n_to_eat;
+	int		philo_finished;
+	bool	all_finished;
+	bool	dead;
+};
+struct s_argv	g_argv;
+
 /* INITIALIZE.C */
+void	ft_init_arg(int argc, char *argv[]);
 void	ft_init_philo(t_philos *philo);
 
 int		ft_atoi(const char *str);

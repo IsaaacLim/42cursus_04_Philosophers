@@ -26,22 +26,24 @@ int	main()
 		printf("Sem_open failed\n");
 		exit (0);
 	}
-
 	philo = malloc(sizeof(t_philos) * 4);
+	if (!philo)
+		return (1);
+	ft_init_philo(philo);
 	i = -1;
 	while (++i < 4)
 	{
-		philo[i].x = fork();
-		if (philo[i].x == 0)
+		philo[i].parent_pid = fork();
+		if (philo[i].parent_pid == 0)
 		{
-			ft_philo_process(forks_pointer, philo[i].x);
+			ft_philo_process(forks_pointer, philo[i].parent_pid);
 			return (0);
 		}
 	}
 	i = -1;
 	while (++i < 4)
 	{
-		waitpid(philo[i].x, NULL, 0);
+		waitpid(philo[i].parent_pid, NULL, 0);
 	}
 	
 	sem_close(forks_pointer);

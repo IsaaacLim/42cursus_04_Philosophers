@@ -20,11 +20,15 @@
 # define RESET "\033[0;0m"
 
 typedef struct s_philos {
+	int		parent_pid;
 	int		x;
 	int		t_last_meal;
 	int		n_eaten;
 	char	color[10];
 }	t_philos;
+
+/* INITIALIZE.C */
+void	ft_init_philo(t_philos *philo);
 
 int		ft_atoi(const char *str);
 int		ft_time(void);

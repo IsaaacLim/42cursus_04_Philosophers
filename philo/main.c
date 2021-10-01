@@ -39,7 +39,7 @@ static void	*ft_philo_thread(void *arg)
 
 static void	ft_philo_checker(t_philos *philo)
 {
-	int			i;
+	int	i;
 
 	while (!g_argv.all_finished && !g_argv.dead)
 	{

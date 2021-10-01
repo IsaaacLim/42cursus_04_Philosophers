@@ -64,6 +64,11 @@ static void	ft_stdout_color(char *philo_color, int i)
 	ft_strncpy(philo_color, colors[i % 6], 10);
 }
 
+/*
+** Designed to prevent deadlock with order of forks taken as:
+**	- Odd numbered philosophers will take left one first
+**	- Even numbered philosohers will take right one first
+*/
 void	ft_init_philo(t_philos *philo)
 {
 	int	i;

@@ -17,6 +17,7 @@ static void	*ft_philo_checker(void *arg)
 			{
 				philo->dead = true;
 				ft_print(*philo, "died");
+				kill(0, SIGTERM);
 			}
 		}
 	}

@@ -12,6 +12,7 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <pthread.h>
+# include <signal.h>
 
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"

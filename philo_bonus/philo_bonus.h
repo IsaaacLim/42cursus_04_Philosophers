@@ -40,6 +40,8 @@ struct s_argv {
 };
 struct s_argv	g_argv;
 
+sem_t			*g_print_lock;
+
 /* INITIALIZE.C */
 void	ft_init_arg(int argc, char *argv[]);
 void	ft_init_philo(t_philos *philo);

@@ -78,5 +78,7 @@ void	ft_sleep(int duration)
 */
 void	ft_print(t_philos philo, char *str)
 {
+	sem_wait(g_print_lock);
 	printf("%06d %s%i %s%s\n", ft_time(), philo.color, philo.x, str, RESET);
+	sem_post(g_print_lock);
 }

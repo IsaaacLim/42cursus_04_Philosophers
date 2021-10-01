@@ -1,14 +1,11 @@
 #include "philo_bonus.h"
 
-/*
-** Error messages (basic) 
-*/
 void	ft_error(int errno)
 {
 	if (errno == 1)
 		printf("\033[0;31mrun: ./philo\033[0m number_of_philosophers\033[0;33m "
-		"time_to_die\033[0m time_to_eat\033[0;33m time_to_sleep\033[0m "
-		"[number_of_times_each_philosopher_must_eat]\n");
+			"time_to_die\033[0m time_to_eat\033[0;33m time_to_sleep\033[0m "
+			"[number_of_times_each_philosopher_must_eat]\n");
 	else if (errno == 2)
 		printf("\033[0;31mInput positive values only\033[0m\n");
 	else if (errno == 3)
@@ -19,9 +16,10 @@ void	ft_error(int errno)
 		printf("ft_philo_process: pthread_create error\n");
 	else if (errno == 6)
 		printf("ft_philo_process: pthread_join error\n");
+	else if (errno == 7)
+		printf("ft_philo_checker: kill error\n");
 	exit (0);
 }
-
 
 /*
 ** 1. Store arguments globally
@@ -33,7 +31,7 @@ void	ft_error(int errno)
 int	main(int argc, char *argv[])
 {
 	t_philos	*philo;
-	sem_t 		*forks_pointer;
+	sem_t		*forks_pointer;
 	int			i;
 	char		forks_name[15];
 

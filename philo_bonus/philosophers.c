@@ -17,7 +17,8 @@ static void	*ft_philo_checker(void *arg)
 			{
 				philo->dead = true;
 				ft_print(*philo, "died");
-				kill(0, SIGTERM);
+				if (kill(0, SIGTERM) != 0)
+					ft_error(7);
 			}
 		}
 	}
@@ -62,8 +63,6 @@ static void	ft_philo_process(t_philos *philo, sem_t *forks)
 	}
 	else
 	{
-		if (philo->x % 2 == 1) //test if needed or not
-			usleep(10000);
 		while (!philo->dead && philo->n_eaten != g_argv.n_to_eat)
 			ft_philo_routine(philo, forks);
 		if (pthread_join(checker, NULL) != 0)

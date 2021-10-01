@@ -22,12 +22,12 @@
 # define RESET "\033[0;0m"
 
 typedef struct s_philos {
-	pid_t	parent_pid;
 	int		x;
 	int		t_last_meal;
 	int		n_eaten;
-	char	color[10];
 	bool	dead;
+	char	color[10];
+	pid_t	parent_pid;
 }	t_philos;
 
 struct s_argv {
@@ -36,9 +36,6 @@ struct s_argv {
 	int		eating;
 	int		sleeping;
 	int		n_to_eat;
-	int		philo_finished;
-	bool	all_finished;
-	bool	dead;
 };
 struct s_argv	g_argv;
 
@@ -46,14 +43,17 @@ struct s_argv	g_argv;
 void	ft_init_arg(int argc, char *argv[]);
 void	ft_init_philo(t_philos *philo);
 
-int	ft_init_processes(t_philos *philo, sem_t *forks_pointer);
-
+/* MAIN.C */
 void	ft_error(int errno);
 
+/* PHILOSOPHERS.c */
+int		ft_init_processes(t_philos *philo, sem_t *forks_pointer);
+
+/* UTILS.C */
 int		ft_atoi(const char *str);
 int		ft_time(void);
-void	ft_print(t_philos philo, char *str);
 void	ft_sleep(int duration);
+void	ft_print(t_philos philo, char *str);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
 #endif

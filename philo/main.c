@@ -1,6 +1,6 @@
 #include "philo.h"
 
-static void	philo_routine(t_philos *philo)
+static void	ft_philo_routine(t_philos *philo)
 {
 	pthread_mutex_lock(&g_fork[philo->fork_a]);
 	ft_print(philo->x, "has taken a fork", philo->color);
@@ -28,7 +28,7 @@ static void	*ft_philo_thread(void *arg)
 	if (philo->x % 2 == 1)
 		usleep(10000);
 	while (!g_argv.all_finished && !g_argv.dead && g_argv.n_philos != 1)
-		philo_routine(philo);
+		ft_philo_routine(philo);
 	if (g_argv.n_philos == 1)
 	{
 		ft_print(philo->x, "has taken a fork", philo->color);
@@ -37,7 +37,7 @@ static void	*ft_philo_thread(void *arg)
 	return (NULL);
 }
 
-static void	*ft_philo_checker(t_philos *philo)
+static void	ft_philo_checker(t_philos *philo)
 {
 	int			i;
 
@@ -58,7 +58,6 @@ static void	*ft_philo_checker(t_philos *philo)
 			}
 		}
 	}
-	return (NULL);
 }
 
 static int	ft_exit(t_philos *philo, pthread_t *th)

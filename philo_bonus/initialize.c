@@ -1,12 +1,5 @@
 #include "philo_bonus.h"
 
-void	ft_error(int errno)
-{
-	if (errno == 3)
-		printf("Sem_open failed\n");
-	exit (0);
-}
-
 static void	ft_check_neg(int num_of_vars)
 {
 	int	argv[5];
@@ -21,22 +14,14 @@ static void	ft_check_neg(int num_of_vars)
 	while (++i < num_of_vars)
 	{
 		if (argv[i] < 0)
-		{
-			printf("\033[0;31mInput positive values only\033[0m\n");
-			exit (1);
-		}
+			ft_error(2);
 	}
 }
 
 void	ft_init_arg(int argc, char *argv[])
 {
 	if (argc != 5 && argc != 6)
-	{
-		printf("\033[0;31mrun: ./philo\033[0m number_of_philosophers\033[0;33m "
-			"time_to_die\033[0m time_to_eat\033[0;33m time_to_sleep\033[0m "
-			"[number_of_times_each_philosopher_must_eat]\n");
-		exit (1);
-	}
+		ft_error(1);
 	g_argv.n_philos = ft_atoi(argv[1]);
 	g_argv.life_span = ft_atoi(argv[2]);
 	g_argv.eating = ft_atoi(argv[3]);

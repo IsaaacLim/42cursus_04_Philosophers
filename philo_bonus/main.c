@@ -24,7 +24,7 @@ void	ft_error(int errno)
 /*
 ** 1. Store arguments globally
 ** 2. Create semaphores (forks)
-** 3. Malloc for # of philos & initialize their values
+** 3. Malloc for # of philosophers & initialize their values
 ** 4. Create processes (philosophers)
 ** 5. Wait for all child processes before exiting program
 */

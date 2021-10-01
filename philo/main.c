@@ -24,6 +24,14 @@ static int	ft_exit(t_philos *philo, pthread_t *th)
 	return (0);
 }
 
+/*
+** 1. Store arguments globally
+** 2. Malloc for # of threads, philosophers, and forks
+** 3. Initialize philosophers and forks
+** 4. Create threads (philosophers)
+** 5. Run checker to know if philosophers has finished or died
+** 6. Wait for all threads to finish then destroy, free and exit program
+*/
 int	main(int argc, char *argv[])
 {
 	int			i;

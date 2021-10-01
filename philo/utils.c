@@ -1,23 +1,8 @@
 #include "philo.h"
 
-char	*ft_strncpy(char *dest, char *src, unsigned int n)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (src[i] != '\0' && i < n)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	while (i < n)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
-
+/*
+** Used to store arguments in ft_init_arg
+*/
 int	ft_atoi(const char *str)
 {
 	int		i;
@@ -40,6 +25,31 @@ int	ft_atoi(const char *str)
 	return (tot * (long)flag);
 }
 
+/*
+** For philosopher's color in ft_stdout_color()
+*/
+char	*ft_strncpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (src[i] != '\0' && i < n)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
+
+/*
+** Provides time format of: sssmmm
+**	s: seconds , m: milliseconds
+*/
 int	ft_time(void)
 {
 	struct timeval	time;
@@ -50,6 +60,9 @@ int	ft_time(void)
 	return ((int)milliseconds);
 }
 
+/*
+** Allows function to sleep for no longer than the required duration
+*/
 void	ft_sleep(int duration)
 {
 	int	time;
@@ -59,6 +72,10 @@ void	ft_sleep(int duration)
 		usleep(500);
 }
 
+/*
+** Philosopher's status stdout format
+**	Used mutex to prevent race condition
+*/
 void	ft_print(int philo_x, char *str, char *color)
 {
 	if (!g_argv.all_finished && !g_argv.dead)

@@ -26,7 +26,8 @@ int	ft_atoi(const char *str)
 }
 
 /*
-** Used to create fork_name (semaphore) in main()
+** For fork_name (semaphore) in main() &
+** for philosopher's color in ft_init_philo()
 */
 char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {

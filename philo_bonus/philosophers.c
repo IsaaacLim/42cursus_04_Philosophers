@@ -1,5 +1,9 @@
 #include "philo_bonus.h"
 
+/*
+** A thread for each processes that checks if its philosopher has died
+** Run only if the philosohper has started eating
+*/
 static void	*ft_philo_checker(void *arg)
 {
 	t_philos	*philo;
@@ -19,6 +23,9 @@ static void	*ft_philo_checker(void *arg)
 	return (NULL);
 }
 
+/*
+** Microsleep after thinking to prevent a philosopher from being greedy
+*/
 static void	ft_philo_routine(t_philos *philo, sem_t *forks)
 {
 	sem_wait(forks);
@@ -37,12 +44,16 @@ static void	ft_philo_routine(t_philos *philo, sem_t *forks)
 	usleep(50);
 }
 
-static int	ft_philo_process(t_philos *philo, sem_t *forks)
+/*
+** Each process will create individual thread to check for dead philosopher
+** Run ft_philo_routine only if there are more than 1 philosopher present
+*/
+static void	ft_philo_process(t_philos *philo, sem_t *forks)
 {
 	pthread_t	checker;
-	
+
 	if (pthread_create(&checker, NULL, ft_philo_checker, philo) != 0)
-		return (1);
+		ft_error(5);
 	if (g_argv.n_philos == 1)
 	{
 		ft_print(*philo, "has taken a fork");
@@ -50,16 +61,18 @@ static int	ft_philo_process(t_philos *philo, sem_t *forks)
 	}
 	else
 	{
-		if (philo->x % 2 == 1)
+		if (philo->x % 2 == 1) //test if needed or not
 			usleep(10000);
 		while (!philo->dead && philo->n_eaten != g_argv.n_to_eat)
 			ft_philo_routine(philo, forks);
 		if (pthread_join(checker, NULL) != 0)
-			return (1); //just change to ft_exit;
+			ft_error(6);
 	}
-	return (0);
 }
 
+/*
+** Only child processes will act as a philosopher
+*/
 int	ft_init_processes(t_philos *philo, sem_t *forks_pointer)
 {
 	int	i;

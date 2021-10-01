@@ -1,5 +1,8 @@
 #include "philo_bonus.h"
 
+/*
+** Error messages (basic) 
+*/
 void	ft_error(int errno)
 {
 	if (errno == 1)
@@ -11,16 +14,21 @@ void	ft_error(int errno)
 	else if (errno == 3)
 		printf("main.c: Sem_open failed\n");
 	else if (errno == 4)
-		printf("main.c: Malloc for philo failed");
+		printf("main.c: Malloc for philo failed\n");
+	else if (errno == 5)
+		printf("ft_philo_process: pthread_create error\n");
+	else if (errno == 6)
+		printf("ft_philo_process: pthread_join error\n");
 	exit (0);
 }
+
 
 /*
 ** 1. Store arguments globally
 ** 2. Create semaphores (forks)
 ** 3. Malloc for # of philos & initialize their values
 ** 4. Create processes (philosophers)
-** 5. Wait for child processes before exiting program
+** 5. Wait for all child processes before exiting program
 */
 int	main(int argc, char *argv[])
 {

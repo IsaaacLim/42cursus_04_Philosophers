@@ -7,7 +7,7 @@ void	ft_error(int errno)
 	exit (0);
 }
 
-static void	ft_check_neg(int variables)
+static void	ft_check_neg(int num_of_vars)
 {
 	int	argv[5];
 	int	i;
@@ -18,7 +18,7 @@ static void	ft_check_neg(int variables)
 	argv[3] = g_argv.sleeping;
 	argv[4] = g_argv.n_to_eat;
 	i = -1;
-	while (++i < variables)
+	while (++i < num_of_vars)
 	{
 		if (argv[i] < 0)
 		{
@@ -41,7 +41,6 @@ void	ft_init_arg(int argc, char *argv[])
 	g_argv.life_span = ft_atoi(argv[2]);
 	g_argv.eating = ft_atoi(argv[3]);
 	g_argv.sleeping = ft_atoi(argv[4]);
-	g_argv.philo_finished = 0;
 	if (argv[5])
 	{
 		g_argv.n_to_eat = ft_atoi(argv[5]);

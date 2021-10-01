@@ -1,5 +1,12 @@
 #include "philo_bonus.h"
 
+void	ft_error(int errno)
+{
+	if (errno == 3)
+		printf("Sem_open failed\n");
+	exit (0);
+}
+
 static void	ft_check_neg(int variables)
 {
 	int	argv[5];
@@ -64,6 +71,25 @@ void	ft_init_philo(t_philos *philo)
 		philo[i].x = i + 1;
 		philo[i].n_eaten = 0;
 		philo[i].t_last_meal = 0;
+		philo[i].dead = false;
 		ft_strncpy(philo[i].color, colors[i % 6], 10);
 	}
 }
+
+// int	ft_init_processes(t_philos *philo, sem_t *forks_pointer)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (++i < g_argv.n_philos)
+// 	{
+// 		philo[i].parent_pid = fork();
+// 		if (philo[i].parent_pid == 0)
+// 		{
+// 			ft_philo_process(&philo[i], forks_pointer);
+// 			return (0);
+// 		}
+// 	}
+// 	printf("OUTSIDE\n");
+// 	return (0);
+// }

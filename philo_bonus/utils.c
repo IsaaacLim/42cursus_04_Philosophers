@@ -61,5 +61,6 @@ void	ft_sleep(int duration)
 
 void	ft_print(int philo_x, char *str, char *color)
 {
-	printf("%06d %s%i %s%s\n", ft_time(), color, philo_x, str, RESET);
+	if (!g_argv.all_finished && !g_argv.dead)
+		printf("%06d %s%i %s%s\n", ft_time(), color, philo_x, str, RESET);
 }

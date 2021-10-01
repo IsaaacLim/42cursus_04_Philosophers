@@ -11,6 +11,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <pthread.h>
 
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
@@ -21,11 +22,12 @@
 # define RESET "\033[0;0m"
 
 typedef struct s_philos {
-	int		parent_pid;
+	pid_t	parent_pid;
 	int		x;
 	int		t_last_meal;
 	int		n_eaten;
 	char	color[10];
+	bool	dead;
 }	t_philos;
 
 struct s_argv {
@@ -43,6 +45,11 @@ struct s_argv	g_argv;
 /* INITIALIZE.C */
 void	ft_init_arg(int argc, char *argv[]);
 void	ft_init_philo(t_philos *philo);
+
+// int	ft_init_processes(t_philos *philo, sem_t *forks_pointer);
+
+void	ft_error(int errno);
+// void	ft_philo_process(t_philos *philo, sem_t *forks);
 
 int		ft_atoi(const char *str);
 int		ft_time(void);

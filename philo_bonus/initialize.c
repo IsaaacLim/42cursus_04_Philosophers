@@ -75,21 +75,3 @@ void	ft_init_philo(t_philos *philo)
 		ft_strncpy(philo[i].color, colors[i % 6], 10);
 	}
 }
-
-// int	ft_init_processes(t_philos *philo, sem_t *forks_pointer)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < g_argv.n_philos)
-// 	{
-// 		philo[i].parent_pid = fork();
-// 		if (philo[i].parent_pid == 0)
-// 		{
-// 			ft_philo_process(&philo[i], forks_pointer);
-// 			return (0);
-// 		}
-// 	}
-// 	printf("OUTSIDE\n");
-// 	return (0);
-// }

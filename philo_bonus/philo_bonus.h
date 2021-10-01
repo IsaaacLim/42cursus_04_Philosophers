@@ -46,16 +46,14 @@ struct s_argv	g_argv;
 void	ft_init_arg(int argc, char *argv[]);
 void	ft_init_philo(t_philos *philo);
 
-// int	ft_init_processes(t_philos *philo, sem_t *forks_pointer);
+int	ft_init_processes(t_philos *philo, sem_t *forks_pointer);
 
 void	ft_error(int errno);
-// void	ft_philo_process(t_philos *philo, sem_t *forks);
 
 int		ft_atoi(const char *str);
 int		ft_time(void);
 void	ft_print(t_philos philo, char *str);
 void	ft_sleep(int duration);
-//not sure if needed
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
 #endif

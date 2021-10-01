@@ -44,6 +44,10 @@ pthread_mutex_t	g_print_lock;
 bool	ft_init_arg(int argc, char *argv[]);
 void	ft_init_philo(t_philos *philo);
 
+/* PHILOSOPHERS.C */
+void	*ft_philo_thread(void *arg);
+void	ft_philo_checker(t_philos *philo);
+
 /* UTILS.C */
 int		ft_atoi(const char *str);
 int		ft_time(void);

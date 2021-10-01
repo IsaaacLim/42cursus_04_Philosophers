@@ -1,6 +1,6 @@
 NAME	=	philo
 
-SRCS	=	main.c	initialize.c	utils.c	
+SRCS	=	main.c	initialize.c	philosophers.c	utils.c	
 OBJS	=	$(SRCS:.c=.o)
 
 CC		=	gcc

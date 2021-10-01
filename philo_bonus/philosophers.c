@@ -65,9 +65,9 @@ static void	ft_philo_process(t_philos *philo, sem_t *forks)
 	{
 		while (!philo->dead && philo->n_eaten != g_argv.n_to_eat)
 			ft_philo_routine(philo, forks);
-		if (pthread_join(checker, NULL) != 0)
-			ft_error(6);
 	}
+	if (pthread_join(checker, NULL) != 0)
+		ft_error(6);
 }
 
 /*

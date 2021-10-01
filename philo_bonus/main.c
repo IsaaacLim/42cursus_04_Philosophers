@@ -12,7 +12,7 @@ static void	*ft_philo_checker(void *arg)
 			if (ft_time() - philo->t_last_meal > g_argv.life_span)
 			{
 				philo->dead = true;
-				ft_print(philo->x, "died", RESET);
+				ft_print(*philo, "died");
 			}
 		}
 	}
@@ -22,18 +22,18 @@ static void	*ft_philo_checker(void *arg)
 void	ft_philo_routine(t_philos *philo, sem_t *forks)
 {
 	sem_wait(forks);
-	ft_print(philo->x, "has taken a fork", philo->color);
+	ft_print(*philo, "has taken a fork");
 	sem_wait(forks);
-	ft_print(philo->x, "has taken a fork", philo->color);
+	ft_print(*philo, "has taken a fork");
 	philo->t_last_meal = ft_time();
-	ft_print(philo->x, "is eating", philo->color);
+	ft_print(*philo, "is eating");
 	philo->n_eaten += 1;
 	ft_sleep(g_argv.eating);
 	sem_post(forks);
 	sem_post(forks);
-	ft_print(philo->x, "is sleeping", philo->color);
+	ft_print(*philo, "is sleeping");
 	ft_sleep(g_argv.sleeping);
-	ft_print(philo->x, "is thinking", philo->color);
+	ft_print(*philo, "is thinking");
 	usleep(50);
 }
 
@@ -43,18 +43,20 @@ int	ft_philo_process(t_philos *philo, sem_t *forks)
 	
 	if (pthread_create(&checker, NULL, ft_philo_checker, philo) != 0)
 		return (1);
-	if (philo->x % 2 == 1) //replace this with a checker for 2 available forks
-		usleep(10000);	//run test with just 2 philos
-	// while (!g_argv.all_finished && !g_argv.dead && g_argv.n_philos != 1)
-	while (!philo->dead && philo->n_eaten != g_argv.n_to_eat)
-		ft_philo_routine(philo, forks);
 	if (g_argv.n_philos == 1)
 	{
-		ft_print(philo->x, "has taken a fork", philo->color);
+		ft_print(*philo, "has taken a fork");
 		philo->t_last_meal = ft_time();
 	}
-	if (pthread_join(checker, NULL) != 0)
-		return (1); //just change to ft_exit;
+	else
+	{
+		if (philo->x % 2 == 1)
+			usleep(10000);
+		while (!philo->dead && philo->n_eaten != g_argv.n_to_eat)
+			ft_philo_routine(philo, forks);
+		if (pthread_join(checker, NULL) != 0)
+			return (1); //just change to ft_exit;
+	}
 	return (0);
 }
 

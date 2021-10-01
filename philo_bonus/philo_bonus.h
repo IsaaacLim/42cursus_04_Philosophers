@@ -53,7 +53,7 @@ void	ft_error(int errno);
 
 int		ft_atoi(const char *str);
 int		ft_time(void);
-void	ft_print(int philo_x, char *str, char *color);
+void	ft_print(t_philos philo, char *str);
 void	ft_sleep(int duration);
 //not sure if needed
 char	*ft_strncpy(char *dest, char *src, unsigned int n);

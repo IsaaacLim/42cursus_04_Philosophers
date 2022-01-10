@@ -62,4 +62,5 @@ int	main(int argc, char *argv[])
 	ft_init_philo(philo);
 	ft_init_processes(philo, forks_pointer);
 	ft_exit(philo, forks_pointer);
+	system("leaks philo_bonus");
 }

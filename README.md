@@ -1,4 +1,4 @@
-# 42cursus_04_Philosophers
+# 42cursus_04_Philosophers 🍝
 
 ## About
 The Dining Philosophers problem
